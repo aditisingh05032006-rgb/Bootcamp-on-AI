@@ -1,0 +1,171 @@
+{
+ "cells": [
+  {
+   "cell_type": "code",
+   "execution_count": 6,
+   "id": "53190d77-7251-407f-b6cf-a015a95bddfc",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Requirement already satisfied: spacy in .\\anaconda3\\Lib\\site-packages (3.8.16)\n",
+      "Requirement already satisfied: spacy-legacy<3.1.0,>=3.0.11 in .\\anaconda3\\Lib\\site-packages (from spacy) (3.0.12)\n",
+      "Requirement already satisfied: spacy-loggers<2.0.0,>=1.0.0 in .\\anaconda3\\Lib\\site-packages (from spacy) (1.0.5)\n",
+      "Requirement already satisfied: murmurhash<1.1.0,>=0.28.0 in .\\anaconda3\\Lib\\site-packages (from spacy) (1.0.15)\n",
+      "Requirement already satisfied: cymem<2.1.0,>=2.0.2 in .\\anaconda3\\Lib\\site-packages (from spacy) (2.0.13)\n",
+      "Requirement already satisfied: preshed<3.1.0,>=3.0.2 in .\\anaconda3\\Lib\\site-packages (from spacy) (3.0.13)\n",
+      "Requirement already satisfied: thinc<8.4.0,>=8.3.12 in .\\anaconda3\\Lib\\site-packages (from spacy) (8.3.13)\n",
+      "Requirement already satisfied: wasabi<1.2.0,>=0.9.1 in .\\anaconda3\\Lib\\site-packages (from spacy) (1.1.3)\n",
+      "Requirement already satisfied: srsly<3.0.0,>=2.5.3 in .\\anaconda3\\Lib\\site-packages (from spacy) (2.5.3)\n",
+      "Requirement already satisfied: catalogue<2.1.0,>=2.0.6 in .\\anaconda3\\Lib\\site-packages (from spacy) (2.0.10)\n",
+      "Requirement already satisfied: weasel<2.0.0,>=1.0.0 in .\\anaconda3\\Lib\\site-packages (from spacy) (1.0.0)\n",
+      "Requirement already satisfied: confection<2.0.0,>=1.3.2 in .\\anaconda3\\Lib\\site-packages (from spacy) (1.3.3)\n",
+      "Requirement already satisfied: typer<1.0.0,>=0.3.0 in .\\anaconda3\\Lib\\site-packages (from spacy) (0.25.1)\n",
+      "Requirement already satisfied: click<9.0.0,>=8.2.1 in .\\anaconda3\\Lib\\site-packages (from spacy) (8.4.1)\n",
+      "Requirement already satisfied: tqdm<5.0.0,>=4.38.0 in .\\anaconda3\\Lib\\site-packages (from spacy) (4.68.2)\n",
+      "Requirement already satisfied: numpy>=1.19.0 in .\\anaconda3\\Lib\\site-packages (from spacy) (2.4.6)\n",
+      "Requirement already satisfied: requests<3.0.0,>=2.13.0 in .\\anaconda3\\Lib\\site-packages (from spacy) (2.34.2)\n",
+      "Requirement already satisfied: pydantic<3.0.0,>=2.0.0 in .\\anaconda3\\Lib\\site-packages (from spacy) (2.13.4)\n",
+      "Requirement already satisfied: jinja2 in .\\anaconda3\\Lib\\site-packages (from spacy) (3.1.6)\n",
+      "Requirement already satisfied: setuptools in .\\anaconda3\\Lib\\site-packages (from spacy) (83.0.0)\n",
+      "Requirement already satisfied: packaging>=20.0 in .\\anaconda3\\Lib\\site-packages (from spacy) (26.0)\n",
+      "Requirement already satisfied: colorama in .\\anaconda3\\Lib\\site-packages (from click<9.0.0,>=8.2.1->spacy) (0.4.6)\n",
+      "Requirement already satisfied: annotated-types>=0.6.0 in .\\anaconda3\\Lib\\site-packages (from pydantic<3.0.0,>=2.0.0->spacy) (0.7.0)\n",
+      "Requirement already satisfied: pydantic-core==2.46.4 in .\\anaconda3\\Lib\\site-packages (from pydantic<3.0.0,>=2.0.0->spacy) (2.46.4)\n",
+      "Requirement already satisfied: typing-extensions>=4.14.1 in .\\anaconda3\\Lib\\site-packages (from pydantic<3.0.0,>=2.0.0->spacy) (4.16.0)\n",
+      "Requirement already satisfied: typing-inspection>=0.4.2 in .\\anaconda3\\Lib\\site-packages (from pydantic<3.0.0,>=2.0.0->spacy) (0.4.2)\n",
+      "Requirement already satisfied: charset_normalizer<4,>=2 in .\\anaconda3\\Lib\\site-packages (from requests<3.0.0,>=2.13.0->spacy) (3.4.7)\n",
+      "Requirement already satisfied: idna<4,>=2.5 in .\\anaconda3\\Lib\\site-packages (from requests<3.0.0,>=2.13.0->spacy) (3.18)\n",
+      "Requirement already satisfied: urllib3<3,>=1.26 in .\\anaconda3\\Lib\\site-packages (from requests<3.0.0,>=2.13.0->spacy) (2.7.0)\n",
+      "Requirement already satisfied: certifi>=2023.5.7 in .\\anaconda3\\Lib\\site-packages (from requests<3.0.0,>=2.13.0->spacy) (2026.6.17)\n",
+      "Requirement already satisfied: blis<1.4.0,>=1.3.0 in .\\anaconda3\\Lib\\site-packages (from thinc<8.4.0,>=8.3.12->spacy) (1.3.3)\n",
+      "Requirement already satisfied: shellingham>=1.3.0 in .\\anaconda3\\Lib\\site-packages (from typer<1.0.0,>=0.3.0->spacy) (1.5.4)\n",
+      "Requirement already satisfied: rich>=13.8.0 in .\\anaconda3\\Lib\\site-packages (from typer<1.0.0,>=0.3.0->spacy) (15.0.0)\n",
+      "Requirement already satisfied: annotated-doc>=0.0.2 in .\\anaconda3\\Lib\\site-packages (from typer<1.0.0,>=0.3.0->spacy) (0.0.4)\n",
+      "Requirement already satisfied: cloudpathlib>=0.7.0 in .\\anaconda3\\Lib\\site-packages (from weasel<2.0.0,>=1.0.0->spacy) (0.25.0)\n",
+      "Requirement already satisfied: smart-open>=5.2.1 in .\\anaconda3\\Lib\\site-packages (from weasel<2.0.0,>=1.0.0->spacy) (8.0.1)\n",
+      "Requirement already satisfied: httpx>=0.24.0 in .\\anaconda3\\Lib\\site-packages (from weasel<2.0.0,>=1.0.0->spacy) (0.28.1)\n",
+      "Requirement already satisfied: anyio in .\\anaconda3\\Lib\\site-packages (from httpx>=0.24.0->weasel<2.0.0,>=1.0.0->spacy) (4.12.1)\n",
+      "Requirement already satisfied: httpcore==1.* in .\\anaconda3\\Lib\\site-packages (from httpx>=0.24.0->weasel<2.0.0,>=1.0.0->spacy) (1.0.9)\n",
+      "Requirement already satisfied: h11>=0.16 in .\\anaconda3\\Lib\\site-packages (from httpcore==1.*->httpx>=0.24.0->weasel<2.0.0,>=1.0.0->spacy) (0.16.0)\n",
+      "Requirement already satisfied: markdown-it-py>=2.2.0 in .\\anaconda3\\Lib\\site-packages (from rich>=13.8.0->typer<1.0.0,>=0.3.0->spacy) (4.0.0)\n",
+      "Requirement already satisfied: pygments<3.0.0,>=2.13.0 in .\\anaconda3\\Lib\\site-packages (from rich>=13.8.0->typer<1.0.0,>=0.3.0->spacy) (2.20.0)\n",
+      "Requirement already satisfied: mdurl~=0.1 in .\\anaconda3\\Lib\\site-packages (from markdown-it-py>=2.2.0->rich>=13.8.0->typer<1.0.0,>=0.3.0->spacy) (0.1.2)\n",
+      "Requirement already satisfied: wrapt in .\\anaconda3\\Lib\\site-packages (from smart-open>=5.2.1->weasel<2.0.0,>=1.0.0->spacy) (2.2.1)\n",
+      "Requirement already satisfied: MarkupSafe>=2.0 in .\\anaconda3\\Lib\\site-packages (from jinja2->spacy) (3.0.3)\n"
+     ]
+    }
+   ],
+   "source": [
+    "!pip install spacy"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 8,
+   "id": "3bae72de-3d8b-4e2f-a437-97181bf8a572",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Collecting en-core-web-sm==3.8.0\n",
+      "  Using cached en_core_web_sm-3.8.0-py3-none-any.whl (12.8 MB)\n",
+      "\u001b[38;5;2m[+] Download and installation successful\u001b[0m\n",
+      "You can now load the package via spacy.load('en_core_web_sm')\n"
+     ]
+    }
+   ],
+   "source": [
+    "!python -m spacy download en_core_web_sm"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 9,
+   "id": "ccf1a85f-e3c6-41eb-a9da-34a4bf1461cf",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Processing text with spaCy...\n",
+      "\n",
+      "--- Extracted Named Entities ---\n",
+      "Entity: Rahul Sharma         | Type: PERSON     (People, including fictional)\n",
+      "Entity: Software             | Type: ORG        (Companies, agencies, institutions, etc.)\n",
+      "Entity: New Delhi            | Type: GPE        (Countries, cities, states)\n",
+      "Entity: Google               | Type: ORG        (Companies, agencies, institutions, etc.)\n",
+      "Entity: 3 years              | Type: DATE       (Absolute or relative dates or periods)\n",
+      "Entity: March 2021           | Type: DATE       (Absolute or relative dates or periods)\n",
+      "Entity: Delhi University     | Type: ORG        (Companies, agencies, institutions, etc.)\n",
+      "Entity: Python               | Type: ORG        (Companies, agencies, institutions, etc.)\n",
+      "Entity: Machine Learning     | Type: PERSON     (People, including fictional)\n",
+      "\n",
+      "--- Identified Keywords/Nouns ---\n",
+      "Key Nouns Found: ['Sharma', 'AWS', 'Google', 'University', 'Software', 'Machine', 'Developer', 'expertise', 'Rahul', 'March', 'Learning', 'Delhi', 'New', 'Python', 'years']\n"
+     ]
+    }
+   ],
+   "source": [
+    "import spacy\n",
+    "\n",
+    "# Load spaCy's lightweight English core model (~12MB)\n",
+    "nlp = spacy.load(\"en_core_web_sm\")\n",
+    "\n",
+    "# Sample unstructured text input\n",
+    "raw_resume_text = \"\"\"\n",
+    "Rahul Sharma is a Software Developer living in New Delhi. \n",
+    "He worked at Google for 3 years starting from March 2021. \n",
+    "Rahul graduated from Delhi University and has expertise in Python, Machine Learning and AWS.\n",
+    "\"\"\"\n",
+    "\n",
+    "print(\"Processing text with spaCy...\\n\")\n",
+    "doc = nlp(raw_resume_text)\n",
+    "\n",
+    "print(\"--- Extracted Named Entities ---\")\n",
+    "# Extract entities like Persons, Organizations, Locations, and Dates\n",
+    "for ent in doc.ents:\n",
+    "  print(f\"Entity: {ent.text:<20} | Type: {ent.label_:<10} ({spacy.explain(ent.label_)})\")\n",
+    "\n",
+    "print(\"\\n--- Identified Keywords/Nouns ---\")\n",
+    "# Extract key nouns/skills\n",
+    "nouns = [token.text for token in doc if token.pos_ in [\"NOUN\", \"PROPN\"]]\n",
+    "print(\"Key Nouns Found:\", list(set(nouns)))"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "701943c5-0b0a-45e9-a402-82a37bf035f0",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3 (ipykernel)",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.14.6"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 5
+}

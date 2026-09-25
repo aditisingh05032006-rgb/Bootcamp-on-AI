@@ -1,0 +1,154 @@
+{
+ "cells": [
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "id": "17719973-021c-4e7c-93bb-1e17e2d90590",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Collecting textblob\n",
+      "  Downloading textblob-0.20.1-py3-none-any.whl.metadata (4.0 kB)\n",
+      "Requirement already satisfied: nltk>=3.9 in .\\anaconda3\\Lib\\site-packages (from textblob) (3.10.0)\n",
+      "Requirement already satisfied: defusedxml in .\\anaconda3\\Lib\\site-packages (from nltk>=3.9->textblob) (0.7.1)\n",
+      "Requirement already satisfied: click in .\\anaconda3\\Lib\\site-packages (from nltk>=3.9->textblob) (8.4.1)\n",
+      "Requirement already satisfied: joblib in .\\anaconda3\\Lib\\site-packages (from nltk>=3.9->textblob) (1.5.3)\n",
+      "Requirement already satisfied: regex>=2021.8.3 in .\\anaconda3\\Lib\\site-packages (from nltk>=3.9->textblob) (2026.5.9)\n",
+      "Requirement already satisfied: tqdm in .\\anaconda3\\Lib\\site-packages (from nltk>=3.9->textblob) (4.68.2)\n",
+      "Requirement already satisfied: colorama in .\\anaconda3\\Lib\\site-packages (from click->nltk>=3.9->textblob) (0.4.6)\n",
+      "Downloading textblob-0.20.1-py3-none-any.whl (624 kB)\n",
+      "   ---------------------------------------- 0.0/625.0 kB ? eta -:--:--\n",
+      "   --------------------------------- ------ 524.3/625.0 kB 4.2 MB/s eta 0:00:01\n",
+      "   ---------------------------------------- 625.0/625.0 kB 3.4 MB/s  0:00:00\n",
+      "Installing collected packages: textblob\n",
+      "Successfully installed textblob-0.20.1\n"
+     ]
+    }
+   ],
+   "source": [
+    "!pip install textblob"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 2,
+   "id": "ebade383-81c0-450a-af9e-331e49e9a9a3",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "--- Real-Time Sentiment Analyzer ---\n",
+      "Type any sentence to analyz. Type 'exit' to quit.\n",
+      "\n"
+     ]
+    },
+    {
+     "name": "stdin",
+     "output_type": "stream",
+     "text": [
+      "Enter Text:  hi, im enjoying working with jupyter notebook\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      " -> Sentiment: POSITIVE 🙂\n",
+      " -> Score: Polarity=0.50, Subjectivity=0.60\n",
+      "\n"
+     ]
+    },
+    {
+     "name": "stdin",
+     "output_type": "stream",
+     "text": [
+      "Enter Text:  exit\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Exiting Analyzer.\n"
+     ]
+    }
+   ],
+   "source": [
+    "from textblob import TextBlob\n",
+    "\n",
+    "\n",
+    "def analyze_sentiment():\n",
+    "  print(\"--- Real-Time Sentiment Analyzer ---\")\n",
+    "  print(\"Type any sentence to analyz. Type 'exit' to quit.\\n\")\n",
+    "\n",
+    "  while True:\n",
+    "    user_input = input(\"Enter Text: \")\n",
+    "\n",
+    "    if user_input.lower().strip() == \"exit\":\n",
+    "      print(\"Exiting Analyzer.\")\n",
+    "      break\n",
+    "\n",
+    "    if not user_input.strip():\n",
+    "      continue\n",
+    "\n",
+    "    # Process text using TextBlob\n",
+    "    blob = TextBlob(user_input)\n",
+    "    polarity = blob.sentiment.polarity  # Range: -1.0 (Negative) to +1.0 (Positive)\n",
+    "    subjectivity = (\n",
+    "        blob.sentiment.subjectivity\n",
+    "    )  # Range: 0.0 (Factual) to 1.0 (Opinion)\n",
+    "\n",
+    "    # Interpret results\n",
+    "    if polarity > 0.1:\n",
+    "      sentiment_label = \"POSITIVE 🙂\"\n",
+    "    elif polarity < -0.1:\n",
+    "      sentiment_label = \"NEGATIVE 🙁\"\n",
+    "    else:\n",
+    "      sentiment_label = \"NEUTRAL 😐\"\n",
+    "\n",
+    "    print(f\" -> Sentiment: {sentiment_label}\")\n",
+    "    print(\n",
+    "        f\" -> Score: Polarity={polarity:.2f}, Subjectivity={subjectivity:.2f}\\n\"\n",
+    "    )\n",
+    "\n",
+    "\n",
+    "if __name__ == \"__main__\":\n",
+    "  analyze_sentiment()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "abe2f711-e817-478d-9444-b0b1addfb78c",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3 (ipykernel)",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.14.6"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 5
+}
